@@ -5,8 +5,9 @@ class StyleTest < Test::Unit::TestCase
 
   context "A style rule" do
     setup do
+      @foo_style_options = {:geometry => "100x100#", :format => :png}
       @attachment = attachment :path => ":basename.:extension",
-                               :styles => { :foo => {:geometry => "100x100#", :format => :png} }
+                               :styles => { :foo => @foo_style_options }
       @style = @attachment.styles[:foo]
     end
     
@@ -30,6 +31,10 @@ class StyleTest < Test::Unit::TestCase
     should "respond to hash notation" do
       assert_equal [:thumbnail], @style[:processors]
       assert_equal "100x100#", @style[:geometry]
+    end
+    
+    should "keep the original options hash intact" do
+      assert_equal({:geometry => "100x100#", :format => :png}, @foo_style_options)
     end
   end
   
